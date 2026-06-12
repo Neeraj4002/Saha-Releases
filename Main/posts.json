@@ -1,0 +1,20 @@
+[
+  {
+    "id": "adding-friends-with-a-qr-code-not-a-username",
+    "title": "Adding friends with a QR code, not a username",
+    "date": "2026-05-28",
+    "tag": "Product",
+    "excerpt": "No search bars, no cold requests. On Saha, you add people the same way you met them — in person.",
+    "draft": false,
+    "content": "No search bars, no cold requests. On Saha, you add people the same way you met them — in person.\n\nEvery account has a personal QR code. To connect, you scan each other's codes — that's it. No usernames to remember, no strangers sliding into anyone's profile.\n\nIt keeps your circle exactly what it should be: the people you actually know."
+  },
+  {
+    "id": "why-we-built-saha-without-a-feed",
+    "title": "Why we built Saha without a feed",
+    "date": "2026-05-12",
+    "tag": "Philosophy",
+    "excerpt": "Most apps are built to keep you scrolling. We wanted to build something that helps you put your phone down and actually be with people.",
+    "draft": false,
+    "content": "Most apps are built to keep you scrolling. We wanted to build something that helps you put your phone down and actually be with people.\n\nWhen we started designing Saha, the first thing we threw out was the algorithmic feed. No ranking, no engagement scoring, no \"you might also like.\" Just a simple, chronological stream of moments shared by people you actually chose.\n\nIt sounds small, but it changes everything. Without an algorithm optimizing for attention, there's no incentive to post for an audience — only for the people who were actually there."
+  }
+]           
