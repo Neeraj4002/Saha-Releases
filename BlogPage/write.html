@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write a Story — Saha Dev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="write-page">
+    <!-- Writing Interface -->
+    <div class="editor-layout">
+        <!-- Left Panel - Editor -->
+        <div class="editor-panel">
+            <!-- Header -->
+            <div class="editor-header">
+                <a href="index.html" class="back-link">← Back to Stories</a>
+                <div class="editor-actions">
+                    <button class="btn btn-outline" onclick="saveDraft()">Save Draft</button>
+                    <button class="btn btn-primary" onclick="publishPost()">Publish</button>
+                </div>
+            </div>
+
+            <!-- Writing Area -->
+            <div class="editor-container">
+                <input 
+                    type="text" 
+                    class="post-title-input" 
+                    id="postTitle"
+                    placeholder="Your story title goes here..." 
+                    maxlength="100"
+                >
+                
+                <div class="title-char-count">
+                    <span id="titleCount">0</span>/100
+                </div>
+
+                <div class="editor-toolbar">
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" title="Bold" onclick="insertMarkdown('**', '**')">
+                            <strong>B</strong>
+                        </button>
+                        <button class="toolbar-btn" title="Italic" onclick="insertMarkdown('*', '*')">
+                            <em>I</em>
+                        </button>
+                        <button class="toolbar-btn" title="Code" onclick="insertMarkdown('`', '`')">
+                            &lt;/&gt;
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" title="Heading" onclick="insertMarkdown('\n# ', '\n')">
+                            H
+                        </button>
+                        <button class="toolbar-btn" title="Quote" onclick="insertMarkdown('\n> ', '\n')">
+                            "
+                        </button>
+                        <button class="toolbar-btn" title="List" onclick="insertMarkdown('\n- ', '\n')">
+                            ≡
+                        </button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" title="Code Block" onclick="insertMarkdown('\n```\n', '\n```\n')">
+                            &lt;code&gt;
+                        </button>
+                    </div>
+                </div>
+
+                <textarea 
+                    id="postContent" 
+                    class="post-editor" 
+                    placeholder="Write your story here... Markdown supported.
+
+Headings:
+# H1
+## H2
+### H3
+
+Formatting:
+**bold** *italic* `code`
+
+Lists:
+- Item 1
+- Item 2
+
+> Blockquote
+
+Code blocks:
+\`\`\`
+code here
+\`\`\`"
+                ></textarea>
+
+                <div class="editor-stats">
+                    <div class="stat">
+                        <span class="stat-label">Words:</span>
+                        <span class="stat-value" id="wordCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Reading time:</span>
+                        <span class="stat-value" id="readTime">0 min</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Characters:</span>
+                        <span class="stat-value" id="charCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Preview & Metadata -->
+        <div class="editor-sidebar">
+            <!-- Preview Toggle -->
+            <div class="sidebar-section">
+                <h3>Preview</h3>
+                <button class="toggle-preview-btn" onclick="togglePreview()">Show Preview</button>
+            </div>
+
+            <!-- Post Metadata -->
+            <div class="sidebar-section">
+                <label class="form-label">Excerpt</label>
+                <textarea 
+                    id="postExcerpt" 
+                    class="form-input form-textarea" 
+                    placeholder="Brief description (shown in listing)" 
+                    maxlength="200"
+                    rows="3"
+                ></textarea>
+                <div class="char-count">
+                    <span id="excerptCount">0</span>/200
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <label class="form-label">Category</label>
+                <select id="postCategory" class="form-input form-select">
+                    <option value="">Select a category</option>
+                    <option value="Architecture">🏗️ Architecture</option>
+                    <option value="Performance">⚡ Performance</option>
+                    <option value="Security">🔒 Security & Privacy</option>
+                    <option value="Insights">💡 Insights</option>
+                </select>
+            </div>
+
+            <div class="sidebar-section">
+                <label class="form-label">Author Name</label>
+                <input 
+                    type="text" 
+                    id="authorName" 
+                    class="form-input" 
+                    placeholder="Your name"
+                    value="Neeraj Rathod"
+                >
+            </div>
+
+            <div class="sidebar-section">
+                <label class="form-label">Author Role</label>
+                <input 
+                    type="text" 
+                    id="authorRole" 
+                    class="form-input" 
+                    placeholder="e.g. Lead Developer"
+                    value="Lead Developer"
+                >
+            </div>
+
+            <div class="sidebar-section">
+                <label class="form-label">Tags</label>
+                <input 
+                    type="text" 
+                    id="postTags" 
+                    class="form-input" 
+                    placeholder="Separate with commas (e.g. flutter, backend, database)"
+                >
+            </div>
+
+            <!-- Publish Status -->
+            <div class="sidebar-section">
+                <label class="form-label">Publish Date</label>
+                <input 
+                    type="date" 
+                    id="publishDate" 
+                    class="form-input"
+                >
+            </div>
+
+            <div class="sidebar-section">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="isDraft">
+                    <span>Save as draft</span>
+                </label>
+            </div>
+
+            <!-- Keyboard Shortcuts -->
+            <div class="sidebar-section shortcuts">
+                <h4>Keyboard Shortcuts</h4>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>S</kbd> Save Draft
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>Enter</kbd> Publish
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>B</kbd> Bold
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>I</kbd> Italic
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Preview</h2>
+                <button class="modal-close" onclick="togglePreview()">✕</button>
+            </div>
+            <div class="modal-body">
+                <article class="preview-article">
+                    <div class="preview-meta">
+                        <span class="preview-date" id="previewDate"></span>
+                        <span class="preview-tag" id="previewTag"></span>
+                    </div>
+                    <h1 id="previewTitle"></h1>
+                    <p id="previewExcerpt" class="preview-excerpt"></p>
+                    <div class="preview-content" id="previewContent"></div>
+                    <div class="preview-footer">
+                        <div class="preview-author">
+                            <div class="preview-avatar"></div>
+                            <div>
+                                <div id="previewAuthorName"></div>
+                                <div id="previewAuthorRole" class="preview-role"></div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

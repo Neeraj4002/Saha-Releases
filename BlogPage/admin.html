@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Saha — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Outfit',sans-serif;background:#FBF4EF;color:#2a3d4a;margin:0;padding:28px}
+  .stage{max-width:820px;margin:0 auto}
+  label{display:block;margin-top:12px;font-weight:600}
+  input,textarea{width:100%;padding:10px;border-radius:6px;border:1px solid #ede4dc;margin-top:6px}
+  .row{display:grid;grid-template-columns:1fr 160px;gap:12px}
+  button{margin-top:12px;padding:10px 14px;border-radius:8px;border:none;background:#56839F;color:#fff;font-weight:600}
+  .muted{color:#8aA4b2;font-size:13px}
+  .downloads{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+  .note{margin-top:12px;color:#4a6070}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <a href="blog.html">← Back to Blog</a>
+    <h1>Create Blog Post</h1>
+    <div class="muted">Creates a Markdown file and an updated posts.json for download. Place files into the <code>posts/</code> folder.</div>
+
+    <label>Title</label>
+    <input id="title">
+
+    <div class="row">
+      <div>
+        <label>Date</label>
+        <input id="date" type="date">
+      </div>
+      <div>
+        <label>Slug</label>
+        <input id="slug" placeholder="optional, auto-generated">
+      </div>
+    </div>
+
+    <label>Excerpt</label>
+    <input id="excerpt">
+
+    <label>Content (Markdown)</label>
+    <textarea id="content" rows="12"></textarea>
+
+    <button id="create">Generate files</button>
+
+    <div id="output" class="note"></div>
+
+    <div class="downloads" id="downloads"></div>
+  </div>
+
+<script>
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}
+async function create(){
+  const title = document.getElementById('title').value.trim();
+  if(!title){alert('Title required');return}
+  const date = document.getElementById('date').value || new Date().toISOString().slice(0,10);
+  let slug = document.getElementById('slug').value.trim();
+  if(!slug) slug = slugify(title)+'-'+date;
+  const excerpt = document.getElementById('excerpt').value.trim();
+  const content = document.getElementById('content').value || '';
+
+  const md = `---\ntitle: ${title}\ndate: ${date}\nexcerpt: ${excerpt}\n---\n\n${content}\n`;
+  const mdName = `posts/${slug}.md`;
+
+  // fetch existing posts.json
+  let posts = [];
+  try{
+    const res = await fetch('posts/posts.json');
+    posts = await res.json();
+  }catch(e){ posts = []; }
+
+  const newPost = {title, date, excerpt, path: mdName};
+  posts.unshift(newPost);
+
+  // create downloadable blobs
+  const mdBlob = new Blob([md],{type:'text/markdown'});
+  const jsonBlob = new Blob([JSON.stringify(posts, null, 2)],{type:'application/json'});
+
+  const downloads = document.getElementById('downloads'); downloads.innerHTML='';
+
+  const a1 = document.createElement('a'); a1.href = URL.createObjectURL(mdBlob); a1.download = slug + '.md'; a1.textContent='Download markdown'; a1.style.padding='8px 12px'; a1.style.background='#eee'; a1.style.borderRadius='6px'; a1.style.textDecoration='none';
+  downloads.appendChild(a1);
+
+  const a2 = document.createElement('a'); a2.href = URL.createObjectURL(jsonBlob); a2.download = 'posts.json'; a2.textContent='Download updated posts.json'; a2.style.padding='8px 12px'; a2.style.background='#eee'; a2.style.borderRadius='6px'; a2.style.textDecoration='none';
+  downloads.appendChild(a2);
+
+  document.getElementById('output').textContent = `Generated ${mdName} — download and place into the posts/ folder, then replace posts/posts.json with the updated file.`;
+}
+
+document.getElementById('create').addEventListener('click', create);
+</script>
+</body>
+</html>

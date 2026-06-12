@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saha — Be Here. Together.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&family=Playpen+Sans:wght@300;400;500;600&family=Kalam:wght@300;400;700&family=Patrik+Hand+SC&family=Hina+Mincho&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:       #56839F;
+    --blue-d:     #3d6278;
+    --blue-l:     #8aafc7;
+    --blue-xl:    #c2d8e8;
+    --blue-xxl:   #e8f1f7;
+    --cream:      #FBF4EF;
+    --cream-d:    #ede4dc;
+    --ink:        #2a3d4a;
+    --ink-l:      #4a6070;
+    --muted:      #8aA4b2;
+    --warm:       #c47c5a;
+  }
+
+  
+  html, body {
+  width: 100%; min-height: 100vh;
+  background: url('premium.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--ink);
+  font-family: 'Kalam', cursive;
+  overflow-x: hidden;
+}
+
+  /* ── Grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    pointer-events: none;
+    opacity: .5;
+  }
+
+  /* ── Stage ── */
+  .stage {
+    position: relative; z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── Nav ── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 0 0;
+  }
+  .wordmark {
+    font-family: 'Hina Mincho', serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+  }
+  .nav-tag {
+    font-size: 11px; font-weight: 400; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--blue-xxl);
+  }
+  .nav-links { display:flex; gap: 18px; align-items: center; }
+  .nav-link { font-size: 14px; color: var(--blue); text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: background .15s; }
+  .nav-link:hover { background: var(--blue-xxl); }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 72px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-left {}
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.14em;font-weight: 700; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp .6s ease .1s forwards;
+  }
+  .hero-headline {
+    font-family: 'Hina Mincho', serif;
+    font-size: 62px; font-weight: 300; line-height: 1.05;
+    color: var(--ink); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp .7s ease .2s forwards;
+  }
+  .hero-headline em {
+    font-style: italic; color: var(--blue);
+  }
+  .hero-sub {
+    font-size: 15px; font-weight: 300; line-height: 1.75;
+    color: var(--ink-l); max-width: 340px;
+    opacity: 0; animation: fadeUp .7s ease .35s forwards;
+  }
+  .hero-cta {
+    margin-top: 36px;
+    display: inline-block; padding: 14px 36px;
+    background: var(--blue); color: #fff;
+    border-radius: 10px; font-size: 14px; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.02em;
+    opacity: 0; animation: fadeUp .7s ease .5s forwards;
+    transition: background .2s, transform .2s;
+  }
+  .hero-cta:hover { background: var(--blue-d); transform: translateY(-2px); }
+
+  /* phone mockup */
+  .hero-right {
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; animation: fadeUp .8s ease .3s forwards;
+  }
+  .phone {
+    width: 200px; height: 380px;
+    background: #fff;
+    border: 1.5px solid var(--cream-d);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(86,131,159,.13);
+    animation: floatPhone 5s ease-in-out infinite;
+  }
+  @keyframes floatPhone { 0%,100%{transform:translateY(0) rotate(-1.5deg)} 50%{transform:translateY(-10px) rotate(1deg)} }
+  .phone-bar {
+    height: 10px; background: var(--blue); width: 100%;
+  }
+  .phone-notch {
+    width: 56px; height: 8px; background: var(--cream-d); border-radius: 0 0 10px 10px;
+    margin: 0 auto;
+  }
+  .phone-content {
+    padding: 12px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .memory-card {
+    background: var(--cream); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--cream-d);
+  }
+  .mem-img {
+    height: 72px;
+    background: var(--blue-xxl);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .mem-body { padding: 8px 10px; }
+  .mem-name { font-size: 10px; font-weight: 500; color: var(--ink); }
+  .mem-time { font-size: 9px; color: var(--muted); margin-top: 1px; }
+
+  .memory-card.sm { display: flex; align-items: center; gap: 8px; padding: 8px 10px; }
+  .sm-dot { width: 30px; height: 30px; border-radius: 23%; background: var(--blue-xxl); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .sm-name { font-size: 10px; font-weight: 500; color: var(--ink); }
+  .sm-msg { font-size: 9px; color: var(--muted); margin-top: 1px; }
+
+  /* ── Divider ── */
+  .divider {
+    width: 48px; height: 1px; background: var(--blue-xl);
+    margin: 0 auto 60px;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink); text-align: center; margin-bottom: 14px;
+  }
+  .section-headline {
+    font-family: 'Hina Mincho', serif;
+    font-size: 44px; font-weight: 300; line-height: 1.1;
+    color: var(--ink); text-align: center; margin-bottom: 12px;
+  }
+  .section-headline em { font-style: italic; color: var(--blue); }
+  .section-sub {
+    font-size: 15px; font-weight: 300; color: var(--ink-l);
+    line-height: 1.7; text-align: center; max-width: 440px;
+    margin: 0 auto 48px;
+  }
+
+  /* ── Feature: Memories ── */
+  .memories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 72px;
+  }
+  .mem-tile {
+    background: #fff;
+    border: 1px solid var(--cream-d);
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform .3s, box-shadow .3s;
+  }
+  .mem-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(86,131,159,.1); }
+  .mem-tile-img {
+    height: 120px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px;
+  }
+  .mem-tile-img.c1 { background: #e8f1f7; }
+  .mem-tile-img.c2 { background: #f0ebe6; }
+  .mem-tile-img.c3 { background: #eaf3ec; }
+  .mem-tile-body { padding: 14px 16px; }
+  .mem-tile-title { font-size: 16px;font-family: Hina Mincho; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .mem-tile-caption { font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.5; }
+
+  /* ── Feature: Creator ── */
+  .creator-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 72px;
+  }
+  .creator-text {}
+  .creator-accent {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 16px;
+  }
+  .creator-headline {
+    font-family: 'Hina Mincho', serif;
+    font-size: 38px; font-weight: 300; line-height: 1.12;
+    margin-bottom: 16px;
+  }
+  .creator-headline em { font-style: italic; color: var(--blue); }
+  .creator-body {
+    font-size: 14px; font-weight: 300; color: var(--ink-l); line-height: 1.75;
+  }
+  .creator-visual {
+    background: #fff; border: 1px solid var(--cream-d);
+    border-radius: 8px; padding: 8px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .post-composer {
+    background: var(--cream); border-radius: 8px; padding: 14px;
+    border: 1px dashed var(--blue-xl);
+  }
+  .composer-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .composer-prompt {
+    font-family: 'Hina Mincho', serif;
+    font-size: 17px; font-style: italic; color: var(--ink); line-height: 1.4;
+  }
+  .post-meta {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .post-who { display: flex; align-items: center; gap: 8px; }
+  .post-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--blue-xxl); display:flex;align-items:center;justify-content:center; font-size:13px; }
+  .post-name { font-size: 12px; font-weight: 500; color: var(--ink); }
+  .post-badge {
+    font-size: 10px; padding: 3px 10px; border-radius: 100px;
+    background: var(--blue-xxl); color: var(--blue-d); font-weight: 500;
+  }
+
+  /* ── Feature: No feed junk ── */
+  .antifeed-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    align-items: center; margin-bottom: 72px;
+  }
+  .antifeed-visual { order: -1; }
+  .strike-list { display: flex; flex-direction: column; gap: 10px; }
+  .strike-item {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1px solid var(--cream-d);
+    border-radius: 12px; padding: 12px 16px;
+  }
+  .strike-icon { font-size: 18px; flex-shrink: 0; color: var(--blue-l); }
+  .strike-text { font-size: 13px; color: var(--ink-l); position: relative; display: inline-block; }
+  .strike-text::after {
+    content: '';
+    position: absolute; left: 0; top: 50%; height: 1.5px;
+    background: #c47c5a; border-radius: 2px;
+    width: 0; transition: width .5s ease;
+  }
+  .strike-item.struck .strike-text::after { width: 100%; }
+  .check-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--blue-xxl); border-radius: 12px; padding: 12px 16px;
+  }
+  .check-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--blue-xl); display:flex;align-items:center;justify-content:center; flex-shrink:0; }
+  .check-icon svg { width: 11px; height: 11px; }
+  .check-text { font-size: 13px; color: var(--blue-d); font-weight: 500; }
+
+  /* ── Feature: QR ── */
+  .qr-section {
+    text-align: center; margin-bottom: 72px;
+  }
+  .qr-demo {
+    display: inline-flex; align-items: center; gap: 32px;
+    background: #fff; border: 1px solid var(--cream-d);
+    border-radius: 28px; padding: 32px 48px;
+    margin-top: 32px;
+  }
+  .qr-person { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .qr-avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--blue-xxl); border: 2px solid var(--blue-xl); display:flex;align-items:center;justify-content:center; font-size:22px; }
+  .qr-name { font-size: 12px; font-weight: 500; color: var(--ink); }
+  .qr-box-outer { width: 100px; height: 100px; background: #fff; border: 2px solid var(--blue-xl); border-radius: 16px; padding: 10px; position: relative; overflow: hidden; }
+  .qr-box-inner { width: 100%; height: 100%; background: repeating-conic-gradient(var(--ink) 0% 25%, #fff 0% 50%) 0 0 / 12px 12px; border-radius: 6px; opacity: .8; }
+  .qr-scan-beam { position: absolute; left: 0; right: 0; height: 2px; background: var(--blue); animation: scanLine 1.5s linear infinite; }
+  @keyframes scanLine { 0%{top:6px} 100%{top:calc(100% - 6px)} }
+  .qr-arrow { color: var(--blue-xl); font-size: 24px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .qr-arrow span { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ── Feature: Privacy ── */
+  .privacy-strip {
+    background: var(--ink); border-radius: 8px; padding: 18px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    align-items: center; margin-bottom: 72px;
+  }
+  .privacy-left {}
+  .privacy-eyebrow { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-l); margin-bottom: 14px; }
+  .privacy-headline {
+    font-family: 'Hina Mincho', serif;
+    font-size: 38px; font-weight: 300; line-height: 1.1; color: #fff;
+  }
+  .privacy-headline em { font-style: italic; color: var(--blue-l); }
+  .privacy-body { font-size: 14px; font-weight: 300; color: #8aA4b2; line-height: 1.7; margin-top: 14px; }
+  .privacy-right { display: flex; flex-direction: column; gap: 8px; }
+  .priv-card {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 8px; padding: 10px 10px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .priv-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-l); flex-shrink:0; margin-top:5px; }
+  .priv-text { font-size: 13px; color: rgba(255,255,255,.75); line-height: 1.55; font-weight: 300; }
+
+  /* ── Profile ── */
+  .profile-section { margin-bottom: 72px; }
+  .profile-showcase {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .profile-card-big {
+    width: 200px; background: #fff; border: 1px solid var(--cream-d);
+    border-radius: 10px; overflow: hidden;
+    transition: transform .3s;
+  }
+  .profile-card-big:hover { transform: translateY(-4px); }
+  .p-banner { height: 72px; }
+  .p-banner.b1 { background: var(--blue); }
+  .p-banner.b2 { background: #5c8a5e; }
+  .p-banner.b3 { background: #a0637a; }
+  .p-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--cream); border: 3px solid #fff; margin: -22px 0 0 12px; display:flex;align-items:center;justify-content:center; font-size:18px; }
+  .p-name { font-size: 13px; font-weight: 500; color: var(--ink); padding: 8px 12px 2px; }
+  .p-bio { font-size: 11px; color: var(--muted); padding: 0 12px 12px; line-height: 1.5; }
+  .p-tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 100px; margin: 0 0 10px 12px; }
+  .p-tag.t1 { background: var(--blue-xxl); color: var(--blue-d); }
+  .p-tag.t2 { background: #eaf3ec; color: #3a6040; }
+  .p-tag.t3 { background: #f5eaef; color: #7a3e56; }
+
+  /* ── Final CTA ── */
+  .finale {
+    text-align: center; padding: 80px 0 40px;
+  }
+  .finale-wordmark {
+    font-family: 'Hina Mincho', cursive;
+    font-size: 72px; font-weight: 700;
+    color: var(--blue); letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+  .finale-tagline {
+    font-family: 'Hina Mincho', serif;
+    font-size: 22px; font-style: italic; font-weight: 300;
+    color: var(--ink-l); margin-bottom: 40px;
+  }
+  .finale-cta {
+    display: inline-block; padding: 16px 48px;
+    background: var(--blue); color: #fff; border-radius: 100px;
+    font-size: 15px; font-weight: 500; text-decoration: none;
+    letter-spacing: 0.02em; transition: background .2s, transform .2s;
+  }
+  .finale-cta:hover { background: var(--blue-d); transform: translateY(-2px); }
+  .finale-note { font-size: 12px; font-weight: 300; color: var(--muted); margin-top: 20px; }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--cream-d);
+    padding: 24px 0; text-align: center;
+    font-size: 11px; color: var(--muted); font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero, .creator-row, .antifeed-row { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .antifeed-visual { order: 0; }
+    .privacy-strip { grid-template-columns: 1fr; }
+    .hero-headline { font-size: 44px; }
+    .section-headline { font-size: 34px; }
+    .qr-demo { flex-direction: column; padding: 24px; }
+    .memories-grid { grid-template-columns: 1fr 1fr; }
+    .profile-showcase { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- Nav -->
+  <nav>
+    <div class="wordmark">Saha</div>
+    <div class="nav-links">
+      <a href="blog.html" class="nav-link">Blog</a>
+      <div class="nav-tag">a new kind of social</div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">introducing Saha</div>
+      <h1 class="hero-headline">
+        You for real.<br>
+        
+      </h1>
+      <p class="hero-sub">
+        Not a feed. Not a follower count. Saha is where you catch up with the people you love — and build memories worth keeping.
+      </p>
+      <a href="#" class="hero-cta">Get early access</a>
+    </div>
+    <div class="hero-right">
+      <div class="phone">
+        <div class="phone-bar"></div>
+        <div class="phone-notch"></div>
+        <div class="phone-content">
+          <div class="memory-card">
+            <div class="mem-img">🏕️</div>
+            <div class="mem-body">
+              <div class="mem-name">Weekend at the cabin</div>
+              <div class="mem-time">with Priya, Rahul &amp; 3 others · 2 days ago</div>
+            </div>
+          </div>
+          <div class="memory-card sm">
+            <div class="sm-dot">🎸</div>
+            <div>
+              <div class="sm-name">Karan shared a moment</div>
+              <div class="sm-msg">"first jam session of the year 🎶"</div>
+            </div>
+          </div>
+          <div class="memory-card sm">
+            <div class="sm-dot">🌅</div>
+            <div>
+              <div class="sm-name">Meera shared a moment</div>
+              <div class="sm-msg">"golden hour from my rooftop"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Memories -->
+  <section class="reveal">
+    <div class="section-label">what Saha is for</div>
+    <h2 class="section-headline">Moments, not metrics.</h2>
+    <p class="section-sub">Every post on Saha is a memory — not content. Shared with the people who were actually there, or who actually care.</p>
+    <div class="memories-grid">
+      <div class="mem-tile">
+        <div class="mem-tile-img c1">🌿</div>
+        <div class="mem-tile-body">
+          <div class="mem-tile-title">Slow Sunday mornings</div>
+          <div class="mem-tile-caption">Share the little rituals only your close ones would understand.</div>
+        </div>
+      </div>
+      <div class="mem-tile">
+        <div class="mem-tile-img c2">🎞️</div>
+        <div class="mem-tile-body">
+          <div class="mem-tile-title">Real, unfiltered moments</div>
+          <div class="mem-tile-caption">No beauty filters. Just you, exactly as you are.</div>
+        </div>
+      </div>
+      <div class="mem-tile">
+        <div class="mem-tile-img c3">🤝</div>
+        <div class="mem-tile-body">
+          <div class="mem-tile-title">Inside jokes &amp; catchups</div>
+          <div class="mem-tile-caption">The kind of stuff only your people would get.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creator -->
+  <section class="creator-row reveal">
+    <div class="creator-text">
+      <div class="creator-accent">you are not the product</div>
+      <h2 class="creator-headline">
+        Stop consuming.<br>
+        Start <em>creating.</em>
+      </h2>
+      <p class="creator-body">
+        Every other platform wants you to scroll endlessly. Saha wants you to <em>make</em> something — a memory, a moment, a little piece of yourself — and share it with the people who matter. You're the author here, not the audience.
+      </p>
+    </div>
+    <div class="creator-visual">
+      <div class="post-composer">
+        <div class="composer-label">capturing a moment…</div>
+        <div class="composer-prompt">"Finally taught Dadi how to video call. She laughed the whole time. 🌸"</div>
+      </div>
+      <div class="post-meta">
+        <div class="post-who">
+          <div class="post-avatar">🌙</div>
+          <div class="post-name">luna.wav</div>
+        </div>
+        <div class="post-badge">shared with 8 friends</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- No junk feed -->
+  <section class="antifeed-row reveal">
+    <div class="antifeed-visual">
+      <div class="strike-list" id="strikeList">
+        <div class="strike-item">
+          <span class="strike-icon">📢</span>
+          <span class="strike-text">Ads between your memories</span>
+        </div>
+        <div class="strike-item">
+          <span class="strike-icon">🤖</span>
+          <span class="strike-text">Algorithmic rabbit holes</span>
+        </div>
+        <div class="strike-item">
+          <span class="strike-icon">✨</span>
+          <span class="strike-text">Fake beauty filters</span>
+        </div>
+        <div class="strike-item">
+          <span class="strike-icon">📊</span>
+          <span class="strike-text">Dark analytical patterns</span>
+        </div>
+        <div class="check-item">
+          <div class="check-icon"><svg viewBox="0 0 11 11"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5" fill="none" stroke="#56839F" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <span class="check-text">Just the people you chose</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="creator-accent" style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">what we left out</div>
+      <h2 class="creator-headline">
+        No noise.<br>
+        <em>Only signal.</em>
+      </h2>
+      <p class="creator-body">
+        Saha has no ads, no algorithm deciding what you see, no engagement traps. Your feed is chronological, honest, and full of the people you actually picked — nothing else.
+      </p>
+    </div>
+  </section>
+
+  <!-- QR -->
+  <section class="qr-section reveal">
+    <div class="section-label">adding friends</div>
+    <h2 class="section-headline">No usernames.<br><em>Just scan & say hi.</em></h2>
+    <p class="section-sub">You meet IRL. You add each other on Saha the same way — in person, QR code to QR code. No cold requests. No strangers.</p>
+    <div class="qr-demo">
+      <div class="qr-person">
+        <div class="qr-avatar">😄</div>
+        <div class="qr-name">you</div>
+      </div>
+      <div class="qr-arrow">
+        <svg width="48" height="16" viewBox="0 0 48 16" fill="none"><path d="M0 8h44M38 2l6 6-6 6" stroke="#c2d8e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>scan</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <div class="qr-box-outer">
+          <div class="qr-box-inner"></div>
+          <div class="qr-scan-beam"></div>
+        </div>
+        <span style="font-size:10px;color:var(--blue);font-weight:500;letter-spacing:0.06em;text-transform:uppercase;">QR code</span>
+      </div>
+      <div class="qr-arrow">
+        <svg width="48" height="16" viewBox="0 0 48 16" fill="none"><path d="M0 8h44M38 2l6 6-6 6" stroke="#c2d8e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>connect</span>
+      </div>
+      <div class="qr-person">
+        <div class="qr-avatar" style="background:#f0ebe6;">🫂</div>
+        <div class="qr-name">friend</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section class="privacy-strip reveal">
+    <div class="privacy-left">
+      <div class="privacy-eyebrow">privacy by design</div>
+      <h2 class="privacy-headline">What you share<br>stays <em>yours.</em></h2>
+      <p class="privacy-body">Saha was built with privacy as a foundation — not a feature. Every architectural decision was made to protect you, not monetize you.</p>
+    </div>
+    <div class="privacy-right">
+      <div class="priv-card">
+        <div class="priv-dot"></div>
+        <div class="priv-text">Screenshots are disabled across the entire app — except your own QR page. Your moments stay in the moment.</div>
+      </div>
+      <div class="priv-card">
+        <div class="priv-dot"></div>
+        <div class="priv-text">No tracking pixels. No behavioral data sold. No ad profiles built from your activity.</div>
+      </div>
+      <div class="priv-card">
+        <div class="priv-dot"></div>
+        <div class="priv-text">Your friend graph is never analyzed or handed to third parties — ever.</div>
+      </div>
+      <div class="priv-card">
+        <div class="priv-dot"></div>
+        <div class="priv-text">No dark patterns. No infinite scroll. No streak mechanics designed to keep you hooked.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profiles -->
+  <section class="profile-section reveal">
+    <div class="section-label">your profile</div>
+    <h2 class="section-headline">Express the <em>real you.</em></h2>
+    <p class="section-sub">Fully customizable profiles — inspired by the creative freedom of MySpace and SpaceHey. Your page, your aesthetic, your personality.</p>
+    <div class="profile-showcase">
+      <div class="profile-card-big">
+        <div class="p-banner b1"></div>
+        <div class="p-avatar">🌙</div>
+        <div class="p-name">luna.wav</div>
+        <div class="p-bio">music, plants, 3am thoughts 🌿</div>
+        <div class="p-tag t1">ocean theme</div>
+      </div>
+      <div class="profile-card-big">
+        <div class="p-banner b2"></div>
+        <div class="p-avatar">🏕️</div>
+        <div class="p-name">aryan.outdoors</div>
+        <div class="p-bio">chasing trails and golden hour 🏔️</div>
+        <div class="p-tag t2">forest theme</div>
+      </div>
+      <div class="profile-card-big">
+        <div class="p-banner b3"></div>
+        <div class="p-avatar">🌸</div>
+        <div class="p-name">priya.makes</div>
+        <div class="p-bio">ceramics, chai, slow living 🍵</div>
+        <div class="p-tag t3">rose theme</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Finale -->
+  <section class="finale reveal">
+    <div class="finale-wordmark">Saha</div>
+    <div class="finale-tagline">You for real.</div>
+    <a href="#" class="finale-cta">get early access</a>
+    <div class="finale-note">no ads · no algorithm · no nonsense · just you and your people</div>
+  </section>
+
+  <footer>
+    &copy; 2026 Saha · your data stays yours, always.
+  </footer>
+
+</div>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i * 0.05) + 's';
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+
+  // Strike-through animation when section scrolls into view
+  const strikeList = document.getElementById('strikeList');
+  const strikeIO = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      const items = strikeList.querySelectorAll('.strike-item');
+      items.forEach((item, i) => {
+        setTimeout(() => item.classList.add('struck'), 500 + i * 200);
+      });
+      strikeIO.unobserve(strikeList);
+    }
+  }, { threshold: 0.3 });
+  strikeIO.observe(strikeList);
+</script>
+</body>
+</html>

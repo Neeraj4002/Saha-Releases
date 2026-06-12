@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saha Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:       #56839F;
+    --blue-d:     #3d6278;
+    --blue-l:     #8aafc7;
+    --blue-xl:    #c2d8e8;
+    --blue-xxl:   #e8f1f7;
+    --cream:      #FBF4EF;
+    --cream-d:    #ede4dc;
+    --ink:        #2a3d4a;
+    --ink-l:      #4a6070;
+    --muted:      #8aA4b2;
+  }
+  html,bodyhtml, body {
+  width: 100%; min-height: 100vh;
+  background: url('Metro.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+}
+  .stage{max-width:820px;margin:0 auto;padding:28px}
+  nav{display:flex;align-items:center;justify-content:space-between}
+  .wordmark{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--blue)}
+  .nav-links{display:flex;gap:18px;align-items:center}
+  .nav-link{font-size:14px;color:var(--blue);text-decoration:none;font-weight:500;padding:8px 12px;border-radius:8px}
+  .nav-link:hover{background:var(--blue-xxl)}
+  h1{font-family:'Cormorant Garamond',serif;font-size:40px;margin:18px 0;color:var(--ink)}
+  .posts-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+  .post-card{background:#fff;border:1px solid var(--cream-d);border-radius:8px;padding:18px}
+  .post-title{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:8px}
+  .post-meta{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .post-excerpt{font-size:14px;color:var(--ink-l);line-height:1.5}
+  .read-more{display:inline-block;margin-top:12px;color:var(--blue);text-decoration:none;font-weight:600}
+  @media(max-width:640px){.posts-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <nav>
+      <div class="wordmark">Saha</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+      </div>
+    </nav>
+
+    <h1>Blog</h1>
+    <p style="color:var(--ink-l);margin-top:8px">Thoughts, updates, and stories from the Saha team and community.</p>
+
+    <div id="posts" class="posts-grid" aria-live="polite"></div>
+  </div>
+
+<script>
+async function loadPosts(){
+  try{
+    const res = await fetch('posts/posts.json');
+    const posts = await res.json();
+    const container = document.getElementById('posts');
+    posts.forEach(p => {
+      const card = document.createElement('article');
+      card.className = 'post-card';
+      const url = `post.html?path=${encodeURIComponent(p.path)}`;
+      card.innerHTML = `
+        <div class="post-title">${p.title}</div>
+        <div class="post-meta">${p.date}</div>
+        <div class="post-excerpt">${p.excerpt}</div>
+        <a class="read-more" href="${url}">Read →</a>
+      `;
+      container.appendChild(card);
+    });
+  }catch(e){
+    document.getElementById('posts').textContent = 'No posts yet.';
+  }
+}
+loadPosts();
+</script>
+</body>
+</html>
