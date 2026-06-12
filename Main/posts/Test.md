@@ -1,5 +1,5 @@
 ---
-title: Screenshot is disabled
+title: Screenshot is disabled 😑😑
 date: 2026-05-28
 tag: Feature
 excerpt: No one can screenshot your personal pics, not even your close connections. On Saha, you add people the same way you met them — in person.
