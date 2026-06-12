@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saha — Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+      html, body {
+  width: 100%; min-height: 100vh;
+  background: url('Lowerclouds.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--ink);
+
+  overflow-x: hidden;
+}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <nav class="site-nav">
+      <div class="wordmark">Saha</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link active">Blog</a>
+        <a href="write.html" class="nav-link">Write</a>
+      </div>
+    </nav>
+
+    <div class="page-header">
+      <div class="page-eyebrow">from the team</div>
+      <h1 class="page-title">The Saha <em>Blog</em></h1>
+      <p class="page-sub">Notes, updates, and stories about what we're building and why.</p>
+    </div>
+
+    <div id="posts" class="posts-grid"></div>
+  </div>
+
+  <footer class="site-footer">
+    &copy; 2026 Saha · your data stays yours, always.
+  </footer>
+
+<script>
+// Seed posts shown the first time the blog is opened.
+const SEED_POSTS = [
+  {
+    id: 'seed-1',
+    title: 'Why we built Saha without a feed',
+    date: '2026-05-12',
+    tag: 'Philosophy',
+    excerpt: 'Most apps are built to keep you scrolling. We wanted to build something that helps you put your phone down and actually be with people.',
+    content: `Most apps are built to keep you scrolling. We wanted to build something that helps you put your phone down and actually be with people.
+
+When we started designing Saha, the first thing we threw out was the algorithmic feed. No ranking, no engagement scoring, no "you might also like." Just a simple, chronological stream of moments shared by people you actually chose.
+
+It sounds small, but it changes everything. Without an algorithm optimizing for attention, there's no incentive to post for an audience — only for the people who were actually there.`
+  },
+  {
+    id: 'seed-2',
+    title: 'Adding friends with a QR code, not a username',
+    date: '2026-05-28',
+    tag: 'Product',
+    excerpt: 'No search bars, no cold requests. On Saha, you add people the same way you met them — in person.',
+    content: `No search bars, no cold requests. On Saha, you add people the same way you met them — in person.
+
+Every account has a personal QR code. To connect, you scan each other's codes — that's it. No usernames to remember, no strangers sliding into anyone's profile.
+
+It keeps your circle exactly what it should be: the people you actually know.`
+  }
+];
+
+const STORAGE_KEY = 'saha_posts';
+
+function loadPosts(){
+  let stored;
+  try {
+    stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  } catch(e) { stored = null; }
+
+  if (!Array.isArray(stored)) {
+    stored = SEED_POSTS;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+  }
+  return stored;
+}
+
+function formatDate(d){
+  try {
+    return new Date(d).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+  } catch(e){ return d; }
+}
+
+function render(){
+  const posts = loadPosts()
+    .filter(p => !p.draft)
+    .sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  const container = document.getElementById('posts');
+
+  if (posts.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="post-title">No posts yet</div>
+        <p class="post-excerpt">Once your team publishes something, it'll show up here.</p>
+        <a href="write.html" class="btn btn-primary" style="margin-top:16px">Write the first post</a>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = posts.map(p => `
+    <article class="post-card">
+      ${p.tag ? `<span class="post-tag">${escapeHtml(p.tag)}</span>` : ''}
+      <div class="post-title">${escapeHtml(p.title)}</div>
+      <div class="post-meta">${formatDate(p.date)}</div>
+      <div class="post-excerpt">${escapeHtml(p.excerpt || '')}</div>
+      <a class="read-more" href="post.html?id=${encodeURIComponent(p.id)}">Read →</a>
+    </article>
+  `).join('');
+}
+
+function escapeHtml(s){
+  const div = document.createElement('div');
+  div.textContent = s || '';
+  return div.innerHTML;
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saha — Write a post</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+      html, body {
+  width: 100%; min-height: 100vh;
+  background: url('Lowerclouds.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--ink);
+
+  overflow-x: hidden;
+}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <nav class="site-nav">
+      <div class="wordmark">Saha</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="write.html" class="nav-link active">Write</a>
+      </div>
+    </nav>
+
+    <div class="page-header">
+      <div class="page-eyebrow">team only</div>
+      <h1 class="page-title">Write a <em>post</em></h1>
+      <p class="page-sub">Drafts and published posts save to this browser. Publish to make a post visible on the blog.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" type="text" placeholder="Why we built Saha without a feed" />
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="date">Date</label>
+          <input id="date" type="date" />
+        </div>
+        <div class="field">
+          <label for="tag">Tag</label>
+          <input id="tag" type="text" placeholder="Product, Philosophy, Update…" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="excerpt">Excerpt</label>
+        <textarea id="excerpt" rows="2" placeholder="One or two sentences shown on the blog listing"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="content">Content (Markdown supported — headings with #, bold with **, lists with -)</label>
+        <textarea id="content" rows="14" placeholder="Write your post here…"></textarea>
+        <div class="hint">Supports # headings, **bold**, *italic*, `code`, &gt; quotes, - lists, and ``` code blocks.</div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-secondary" onclick="saveDraft()">Save draft</button>
+        <button class="btn btn-primary" onclick="publishPost()">Publish</button>
+      </div>
+
+      <div id="status" class="status-msg"></div>
+    </div>
+
+    <div class="draft-list">
+      <h3>Drafts</h3>
+      <div id="draftsContainer"></div>
+    </div>
+
+    <div class="draft-list">
+      <h3>Published posts</h3>
+      <div id="publishedContainer"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    &copy; 2026 Saha · your data stays yours, always.
+  </footer>
+
+<script>
+const STORAGE_KEY = 'saha_posts';
+let editingId = null;
+
+function loadAll(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function saveAll(posts){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+function slugify(s){
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || 'post';
+}
+
+function readForm(){
+  return {
+    title: document.getElementById('title').value.trim(),
+    date: document.getElementById('date').value || new Date().toISOString().slice(0,10),
+    tag: document.getElementById('tag').value.trim(),
+    excerpt: document.getElementById('excerpt').value.trim(),
+    content: document.getElementById('content').value
+  };
+}
+
+function showStatus(msg){
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function upsertPost(extra){
+  const data = readForm();
+  if (!data.title) {
+    showStatus('Add a title before saving.');
+    return null;
+  }
+  const posts = loadAll();
+  let post;
+
+  if (editingId) {
+    post = posts.find(p => p.id === editingId);
+    Object.assign(post, data, extra);
+  } else {
+    post = {
+      id: slugify(data.title) + '-' + Date.now(),
+      ...data,
+      ...extra
+    };
+    posts.unshift(post);
+  }
+
+  saveAll(posts);
+  editingId = post.id;
+  renderLists();
+  return post;
+}
+
+function saveDraft(){
+  const post = upsertPost({ draft: true });
+  if (post) showStatus('Draft saved.');
+}
+
+function publishPost(){
+  const data = readForm();
+  if (!data.content.trim()) {
+    showStatus('Add some content before publishing.');
+    return;
+  }
+  const post = upsertPost({ draft: false });
+  if (post) showStatus('Published. View it on the blog.');
+}
+
+function clearForm(){
+  editingId = null;
+  document.getElementById('title').value = '';
+  document.getElementById('date').value = '';
+  document.getElementById('tag').value = '';
+  document.getElementById('excerpt').value = '';
+  document.getElementById('content').value = '';
+}
+
+function editPost(id){
+  const post = loadAll().find(p => p.id === id);
+  if (!post) return;
+  editingId = id;
+  document.getElementById('title').value = post.title || '';
+  document.getElementById('date').value = post.date || '';
+  document.getElementById('tag').value = post.tag || '';
+  document.getElementById('excerpt').value = post.excerpt || '';
+  document.getElementById('content').value = post.content || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deletePost(id){
+  if (!confirm('Delete this post?')) return;
+  const posts = loadAll().filter(p => p.id !== id);
+  saveAll(posts);
+  if (editingId === id) clearForm();
+  renderLists();
+}
+
+function unpublishPost(id){
+  const posts = loadAll();
+  const post = posts.find(p => p.id === id);
+  if (post) post.draft = true;
+  saveAll(posts);
+  renderLists();
+}
+
+function escapeHtml(s){
+  const div = document.createElement('div');
+  div.textContent = s || '';
+  return div.innerHTML;
+}
+
+function renderLists(){
+  const posts = loadAll();
+  const drafts = posts.filter(p => p.draft);
+  const published = posts.filter(p => !p.draft);
+
+  const draftsEl = document.getElementById('draftsContainer');
+  const pubEl = document.getElementById('publishedContainer');
+
+  draftsEl.innerHTML = drafts.length ? drafts.map(p => `
+    <div class="draft-item">
+      <div>
+        <div class="draft-name">${escapeHtml(p.title)}</div>
+        <div class="draft-date">${escapeHtml(p.date)}${p.tag ? ' · ' + escapeHtml(p.tag) : ''}</div>
+      </div>
+      <div class="draft-actions">
+        <button onclick="editPost('${p.id}')">Edit</button>
+        <button class="danger" onclick="deletePost('${p.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('') : '<p class="hint">No drafts yet.</p>';
+
+  pubEl.innerHTML = published.length ? published.map(p => `
+    <div class="draft-item">
+      <div>
+        <div class="draft-name">${escapeHtml(p.title)}</div>
+        <div class="draft-date">${escapeHtml(p.date)}${p.tag ? ' · ' + escapeHtml(p.tag) : ''}</div>
+      </div>
+      <div class="draft-actions">
+        <button onclick="editPost('${p.id}')">Edit</button>
+        <button onclick="unpublishPost('${p.id}')">Unpublish</button>
+        <button class="danger" onclick="deletePost('${p.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('') : '<p class="hint">Nothing published yet.</p>';
+}
+
+renderLists();
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saha — You for real.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+     html, body {
+  width: 100%; min-height: 100vh;
+  background: url('Lowerclouds.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--ink);
+
+  overflow-x: hidden;
+}
+
+
+  .hero { padding: 32px 0 56px; text-align: center; }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.14em; font-weight: 700;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 18px;
+  }
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: 56px; font-weight: 300; line-height: 1.1;
+    color: var(--ink); margin-bottom: 18px;
+  }
+  .hero-headline em { font-style: italic; color: var(--blue); }
+  .hero-sub {
+    font-size: 15px; font-weight: 300; line-height: 1.75;
+    color: var(--ink-l); max-width: 440px; margin: 0 auto 32px;
+  }
+  .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .features {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    margin: 56px 0;
+  }
+  .feature-tile {
+    background: #fff; border: 1px solid var(--cream-d); border-radius: 10px;
+    padding: 22px; text-align: center;
+  }
+  .feature-icon { font-size: 28px; margin-bottom: 10px; }
+  .feature-tile h3 {
+    font-family: var(--font-display); font-size: 17px; font-weight: 500;
+    color: var(--ink); margin-bottom: 6px;
+  }
+  .feature-tile p { font-size: 13px; color: var(--ink-l); line-height: 1.6; }
+
+  .blog-teaser {
+    background: var(--blue-xxl); border-radius: 12px; padding: 36px;
+    text-align: center; margin: 56px 0;
+  }
+  .blog-teaser h2 {
+    font-family: var(--font-display); font-size: 28px; font-weight: 400;
+    color: var(--ink); margin-bottom: 10px;
+  }
+  .blog-teaser p { font-size: 14px; color: var(--ink-l); margin-bottom: 20px; }
+
+  @media (max-width: 640px) {
+    .hero-headline { font-size: 38px; }
+    .features { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <nav class="site-nav">
+      <div class="wordmark">Saha</div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-eyebrow">introducing Saha</div>
+      <h1 class="hero-headline">You for real.</h1>
+      <p class="hero-sub">
+        Not a feed. Not a follower count. Saha is where you catch up with the
+        people you love — and build memories worth keeping.
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn btn-primary">Get early access</a>
+        <a href="blog.html" class="btn btn-secondary">Read the blog</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature-tile">
+        <div class="feature-icon">🌿</div>
+        <h3>Moments, not metrics</h3>
+        <p>Every post is a memory, shared with the people who were actually there.</p>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-icon">🔒</div>
+        <h3>Privacy by design</h3>
+        <p>No ads, no tracking, no algorithm deciding what you see.</p>
+      </div>
+      <div class="feature-tile">
+        <div class="feature-icon">🤝</div>
+        <h3>Add friends in real life</h3>
+        <p>Connect with a QR code scan — no usernames, no cold requests.</p>
+      </div>
+    </section>
+
+    <section class="blog-teaser">
+      <h2>Stories from the Saha team</h2>
+      <p>Updates, behind-the-scenes notes, and ideas — straight from the people building Saha.</p>
+      <a href="blog.html" class="btn btn-primary">Visit the blog</a>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+    &copy; 2026 Saha · your data stays yours, always.
+  </footer>
+</body>
+</html>
