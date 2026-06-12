@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'Main/posts/**'
-      - 'Main/scripts/build-posts.js'
+      - 'Main/scripts/build_posts.js'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Build posts.json
         working-directory: Main
-        run: node scripts/build-posts.js
+        run: node scripts/build_posts.js
 
       - name: Commit posts.json if changed
         run: |
