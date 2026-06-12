@@ -26,7 +26,6 @@
       <div class="nav-links">
         <a href="index.html" class="nav-link">Home</a>
         <a href="blog.html" class="nav-link active">Blog</a>
-        <a href="write.html" class="nav-link">Write</a>
       </div>
     </nav>
 
@@ -42,8 +41,6 @@
   </footer>
 
 <script>
-const STORAGE_KEY = 'saha_posts';
-
 function qs(name){
   return new URL(window.location.href).searchParams.get(name);
 }
@@ -106,7 +103,7 @@ function inline(text){
   return t;
 }
 
-function load(){
+async function load(){
   const id = qs('id');
   const container = document.getElementById('post');
 
@@ -116,7 +113,12 @@ function load(){
   }
 
   let posts = [];
-  try { posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(e) {}
+  try {
+    const res = await fetch('posts.json', { cache: 'no-store' });
+    if (res.ok) posts = await res.json();
+  } catch (e) {
+    console.error(e);
+  }
 
   const post = posts.find(p => p.id === id);
   if (!post) {
