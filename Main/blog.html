@@ -26,7 +26,6 @@
       <div class="nav-links">
         <a href="index.html" class="nav-link">Home</a>
         <a href="blog.html" class="nav-link active">Blog</a>
-        <a href="write.html" class="nav-link">Write</a>
       </div>
     </nav>
 
@@ -44,47 +43,16 @@
   </footer>
 
 <script>
-// Seed posts shown the first time the blog is opened.
-const SEED_POSTS = [
-  {
-    id: 'seed-1',
-    title: 'Why we built Saha without a feed',
-    date: '2026-05-12',
-    tag: 'Philosophy',
-    excerpt: 'Most apps are built to keep you scrolling. We wanted to build something that helps you put your phone down and actually be with people.',
-    content: `Most apps are built to keep you scrolling. We wanted to build something that helps you put your phone down and actually be with people.
-
-When we started designing Saha, the first thing we threw out was the algorithmic feed. No ranking, no engagement scoring, no "you might also like." Just a simple, chronological stream of moments shared by people you actually chose.
-
-It sounds small, but it changes everything. Without an algorithm optimizing for attention, there's no incentive to post for an audience — only for the people who were actually there.`
-  },
-  {
-    id: 'seed-2',
-    title: 'Adding friends with a QR code, not a username',
-    date: '2026-05-28',
-    tag: 'Product',
-    excerpt: 'No search bars, no cold requests. On Saha, you add people the same way you met them — in person.',
-    content: `No search bars, no cold requests. On Saha, you add people the same way you met them — in person.
-
-Every account has a personal QR code. To connect, you scan each other's codes — that's it. No usernames to remember, no strangers sliding into anyone's profile.
-
-It keeps your circle exactly what it should be: the people you actually know.`
-  }
-];
-
-const STORAGE_KEY = 'saha_posts';
-
-function loadPosts(){
-  let stored;
+async function loadPosts(){
   try {
-    stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  } catch(e) { stored = null; }
-
-  if (!Array.isArray(stored)) {
-    stored = SEED_POSTS;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    const res = await fetch('posts.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to load posts.json');
+    const posts = await res.json();
+    return Array.isArray(posts) ? posts : [];
+  } catch (e) {
+    console.error(e);
+    return [];
   }
-  return stored;
 }
 
 function formatDate(d){
@@ -93,8 +61,14 @@ function formatDate(d){
   } catch(e){ return d; }
 }
 
-function render(){
-  const posts = loadPosts()
+function escapeHtml(s){
+  const div = document.createElement('div');
+  div.textContent = s || '';
+  return div.innerHTML;
+}
+
+async function render(){
+  const posts = (await loadPosts())
     .filter(p => !p.draft)
     .sort((a,b) => new Date(b.date) - new Date(a.date));
 
@@ -104,8 +78,7 @@ function render(){
     container.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1">
         <div class="post-title">No posts yet</div>
-        <p class="post-excerpt">Once your team publishes something, it'll show up here.</p>
-        <a href="write.html" class="btn btn-primary" style="margin-top:16px">Write the first post</a>
+        <p class="post-excerpt">Check back soon for updates from the team.</p>
       </div>`;
     return;
   }
@@ -119,12 +92,6 @@ function render(){
       <a class="read-more" href="post.html?id=${encodeURIComponent(p.id)}">Read →</a>
     </article>
   `).join('');
-}
-
-function escapeHtml(s){
-  const div = document.createElement('div');
-  div.textContent = s || '';
-  return div.innerHTML;
 }
 
 render();
